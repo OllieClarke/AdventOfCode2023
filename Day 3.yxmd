@@ -1,0 +1,1488 @@
+<?xml version="1.0"?>
+<AlteryxDocument yxmdVer="2023.1">
+  <Nodes>
+    <Node ToolID="1">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.TextInput.TextInput">
+        <Position x="114" y="198" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <NumRows value="10" />
+          <Fields>
+            <Field name="Input" />
+          </Fields>
+          <Data>
+            <r>
+              <c>467..114..</c>
+            </r>
+            <r>
+              <c>...*......</c>
+            </r>
+            <r>
+              <c>..35..633.</c>
+            </r>
+            <r>
+              <c>......#...</c>
+            </r>
+            <r>
+              <c>617*......</c>
+            </r>
+            <r>
+              <c>.....+.58.</c>
+            </r>
+            <r>
+              <c>..592.....</c>
+            </r>
+            <r>
+              <c>......755.</c>
+            </r>
+            <r>
+              <c>...$.*....</c>
+            </r>
+            <r>
+              <c>.664.598..</c>
+            </r>
+          </Data>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>example input</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxTextInput" />
+    </Node>
+    <Node ToolID="2">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.RecordID.RecordID">
+        <Position x="186" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FieldName>Row</FieldName>
+          <StartValue>1</StartValue>
+          <FieldType>Int32</FieldType>
+          <FieldSize>6</FieldSize>
+          <Position>0</Position>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxRecordID" />
+    </Node>
+    <Node ToolID="3">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="270" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="[Input]" field="token" size="1073741823" type="V_WString" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText><![CDATA[token = [Input]
+]]></DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="4">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.RegEx.RegEx">
+        <Position x="366" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Field>token</Field>
+          <RegExExpression value="." />
+          <CaseInsensitve value="True" />
+          <Method>ParseSimple</Method>
+          <Replace expression="">
+            <CopyUnmatched value="True" />
+          </Replace>
+          <ParseSimple>
+            <SplitToRows value="True" />
+          </ParseSimple>
+          <ParseComplex>
+            <Field field="No Marked Groups Found" type="No Marked Groups Found" size="No Marked Groups Found" />
+          </ParseComplex>
+          <Match>
+            <Field>Input_Matched</Field>
+            <ErrorUnmatched value="False" />
+          </Match>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>tokenise characters</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxRegEx" />
+    </Node>
+    <Node ToolID="5">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.MultiRowFormula.MultiRowFormula">
+        <Position x="558" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <UpdateField value="False" />
+          <UpdateField_Name>Row</UpdateField_Name>
+          <CreateField_Name>col</CreateField_Name>
+          <CreateField_Type>Int32</CreateField_Type>
+          <CreateField_Size>4</CreateField_Size>
+          <OtherRows>Empty</OtherRows>
+          <NumRows value="1" />
+          <Expression>[row-1:col]+1</Expression>
+          <GroupByFields>
+            <Field field="Row" />
+          </GroupByFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>get column ids</AnnotationText>
+          <DefaultAnnotationText>[row-1:col]+1</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxMultiRowFormula" />
+    </Node>
+    <Node ToolID="6">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="858" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="REGEX_Match([token],'[^\d\.]')" field="Symbol" size="1" type="Bool" />
+            <FormulaField expression="![Symbol] AND [token]!='.'" field="Number" size="1" type="Bool" />
+            <FormulaField expression="[token]='*'" field="Gear" size="1" type="Bool" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>flag symbols, numbers and gears</AnnotationText>
+          <DefaultAnnotationText>Symbol = REGEX_Match([token],'[^\d\.]')
+Number = ![Symbol] AND [token]!='.'
+Gear...</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="7">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.MultiRowFormula.MultiRowFormula">
+        <Position x="762" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <UpdateField value="False" />
+          <UpdateField_Name>Row</UpdateField_Name>
+          <CreateField_Name>Num</CreateField_Name>
+          <CreateField_Type>Int32</CreateField_Type>
+          <CreateField_Size>4</CreateField_Size>
+          <OtherRows>Empty</OtherRows>
+          <NumRows value="1" />
+          <Expression>IF regex_match([token],'\d') AND Regex_Match([row-1:token],'\D') THEN [row-1:num]+1
+else [row-1:num] ENDIF</Expression>
+          <GroupByFields />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Make a number id field</AnnotationText>
+          <DefaultAnnotationText>IF regex_match([token],'\d') AND Regex_Match([row-1:token],'\...</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxMultiRowFormula" />
+    </Node>
+    <Node ToolID="8">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Sort.Sort">
+        <Position x="450" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SortInfo locale="1033">
+            <Field field="Row" order="Ascending" />
+          </SortInfo>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>Row - Ascending</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSort" />
+    </Node>
+    <Node ToolID="9">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Sort.Sort">
+        <Position x="654" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SortInfo locale="1033">
+            <Field field="Row" order="Ascending" />
+            <Field field="col" order="Ascending" />
+          </SortInfo>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>Row - Ascending
+col - Ascending</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSort" />
+    </Node>
+    <Node ToolID="10">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Filter.Filter">
+        <Position x="954" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Mode>Simple</Mode>
+          <Simple>
+            <Operator>IsTrue</Operator>
+            <Field>Number</Field>
+            <Operands>
+              <IgnoreTimeInDateTime>True</IgnoreTimeInDateTime>
+              <DateType>fixed</DateType>
+              <PeriodDate>2023-12-04 15:24:27</PeriodDate>
+              <PeriodType>
+              </PeriodType>
+              <PeriodCount>0</PeriodCount>
+              <Operand>
+              </Operand>
+              <StartDate>2023-12-04 15:24:27</StartDate>
+              <EndDate>2023-12-04 15:24:27</EndDate>
+            </Operands>
+          </Simple>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>[Number] = 1</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFilter" />
+    </Node>
+    <Node ToolID="11">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="1050" y="102" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="Num" action="GroupBy" rename="Num" />
+            <SummarizeField field="token" action="Concat" rename="number">
+              <Concat_Start />
+              <Separator />
+              <Concat_End />
+            </SummarizeField>
+            <SummarizeField field="Row" action="GroupBy" rename="Row" />
+            <SummarizeField field="col" action="Min" rename="Min_col" />
+            <SummarizeField field="col" action="Max" rename="Max_col" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Find min and max column per row and number</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="12">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Sort.Sort">
+        <Position x="1230" y="102" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SortInfo locale="1033">
+            <Field field="Num" order="Ascending" />
+          </SortInfo>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>Num - Ascending</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSort" />
+    </Node>
+    <Node ToolID="13">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Filter.Filter">
+        <Position x="1014" y="234" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Mode>Simple</Mode>
+          <Simple>
+            <Operator>IsTrue</Operator>
+            <Field>Symbol</Field>
+            <Operands>
+              <IgnoreTimeInDateTime>True</IgnoreTimeInDateTime>
+              <DateType>fixed</DateType>
+              <PeriodDate>2023-12-04 15:25:49</PeriodDate>
+              <PeriodType>
+              </PeriodType>
+              <PeriodCount>0</PeriodCount>
+              <Operand>
+              </Operand>
+              <StartDate>2023-12-04 15:25:49</StartDate>
+              <EndDate>2023-12-04 15:25:49</EndDate>
+            </Operands>
+          </Simple>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>[Symbol] = 1</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFilter" />
+    </Node>
+    <Node ToolID="14">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="1338" y="102" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="[Row]-1" field="NRow_min" size="8" type="Int64" />
+            <FormulaField expression="[Row]+1" field="NRow_max" size="8" type="Int64" />
+            <FormulaField expression="[Min_col]-1" field="NCol_min" size="8" type="Int64" />
+            <FormulaField expression="[Max_col]+1" field="NCol_max" size="8" type="Int64" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>+- 1 to col and row per number</AnnotationText>
+          <DefaultAnnotationText>NRow_min = [Row]-1
+NRow_max = [Row]+1
+NCol_min = [Min_col]-1
+NCol_max = [Max_col...</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="15">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.GenerateRows.GenerateRows">
+        <Position x="1446" y="102" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <UpdateField value="False" />
+          <UpdateField_Name />
+          <CreateField_Name>Nrow</CreateField_Name>
+          <CreateField_Type>Int32</CreateField_Type>
+          <CreateField_Size>254</CreateField_Size>
+          <Expression_Init>[Nrow_min]</Expression_Init>
+          <Expression_Cond>Nrow &lt;= Nrow_max</Expression_Cond>
+          <Expression_Loop>Nrow + 1</Expression_Loop>
+          <RecordCount value="30" />
+          <RecordCount value="3585" />
+          <RecordCount value="3585" />
+          <RecordCount value="3585" />
+          <RecordCount value="3585" />
+          <RecordCount value="3585" />
+          <RecordCount value="3585" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>generate new rows</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxGenerateRows" />
+    </Node>
+    <Node ToolID="16">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.GenerateRows.GenerateRows">
+        <Position x="1542" y="102" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <UpdateField value="False" />
+          <UpdateField_Name />
+          <CreateField_Name>Ncol</CreateField_Name>
+          <CreateField_Type>Int32</CreateField_Type>
+          <CreateField_Size>254</CreateField_Size>
+          <Expression_Init>[Ncol_min]</Expression_Init>
+          <Expression_Cond>Ncol &lt;= Ncol_max</Expression_Cond>
+          <Expression_Loop>Ncol + 1</Expression_Loop>
+          <RecordCount value="144" />
+          <RecordCount value="17514" />
+          <RecordCount value="17514" />
+          <RecordCount value="17514" />
+          <RecordCount value="17514" />
+          <RecordCount value="17514" />
+          <RecordCount value="17514" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>generate new columns</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxGenerateRows" />
+    </Node>
+    <Node ToolID="18">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Sort.Sort">
+        <Position x="1638" y="102" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SortInfo locale="1033">
+            <Field field="Num" order="Ascending" />
+            <Field field="Nrow" order="Ascending" />
+            <Field field="Ncol" order="Ascending" />
+          </SortInfo>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>Num - Ascending
+Nrow - Ascending
+Ncol - Ascending</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSort" />
+    </Node>
+    <Node ToolID="19">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
+        <Position x="1134" y="102" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <OrderChanged value="False" />
+          <CommaDecimal value="False" />
+          <SelectFields>
+            <SelectField field="number" selected="True" type="Int64" size="8" />
+            <SelectField field="*Unknown" selected="True" />
+          </SelectFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSelect" />
+    </Node>
+    <Node ToolID="20">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Join.Join">
+        <Position x="1758" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration joinByRecordPos="False">
+          <JoinInfo connection="Left">
+            <Field field="Nrow" />
+            <Field field="Ncol" />
+          </JoinInfo>
+          <JoinInfo connection="Right">
+            <Field field="Row" />
+            <Field field="col" />
+          </JoinInfo>
+          <SelectConfiguration>
+            <Configuration outputConnection="Join">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="Right_Row" selected="True" rename="Right_Row" input="Right_" />
+                <SelectField field="Right_Num" selected="True" rename="Right_Num" input="Right_" />
+                <SelectField field="Right_Number" selected="True" rename="Right_Number" input="Right_" />
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Find numbers next to symbols</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxJoin" />
+    </Node>
+    <Node ToolID="23">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="1866" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="number" action="Sum" rename="answer" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>sum numbers</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="24">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.BrowseV2.BrowseV2">
+        <Position x="1974" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <TempFile>C:\Users\ollie\AppData\Local\Temp\Engine_8516_781d491eb65f8f42a06a84e23e3296b9_\Engine_8516_30f7e411624daf4ebe2fa4c7eb1c0dc9~.yxdb</TempFile>
+          <TempFileDataProfiling />
+          <Layout>
+            <ViewMode>Single</ViewMode>
+            <ViewSize value="100" />
+            <View1>
+              <DefaultTab>Profile</DefaultTab>
+              <Hints>
+                <Table />
+              </Hints>
+            </View1>
+            <View2 />
+          </Layout>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Part 1</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxBrowseV2" />
+    </Node>
+    <Node ToolID="25">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.TextInput.TextInput">
+        <Position x="114" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <NumRows value="140" />
+          <Fields>
+            <Field name="Input" />
+          </Fields>
+          <Data>
+            <r>
+              <c>.......................661.........................485..565.......344.......325.....................................841.....725.............</c>
+            </r>
+            <r>
+              <c>....*609..131................512.......................*................536*..............462/..-...60..424.........@....$.*................</c>
+            </r>
+            <r>
+              <c>.316.........*.......39..................@.630......377........919...........98................789..*..*..............788..2.......=..564...</c>
+            </r>
+            <r>
+              <c>...........431...535...*...............622.-..../.................*..........*.......682...........108.116....@...-...............299.......</c>
+            </r>
+            <r>
+              <c>.....................428.....378...844.........416...............586.537=..27..........*......$..............871...331..................492.</c>
+            </r>
+            <r>
+              <c>...878....390....%..............*.*...................739.496=.................867......867..867.........................344......487.../...</c>
+            </r>
+            <r>
+              <c>...../.....*...558........@..535...644..................+.........404..605.......*................................%.....*...................</c>
+            </r>
+            <r>
+              <c>........................381............729..726....578........10...*..........818..............................929....934..........119......</c>
+            </r>
+            <r>
+              <c>.53....31..........734-..........847*.................#.........*...........#............217............/..321....................*.........</c>
+            </r>
+            <r>
+              <c>.......=.............................509.315.654.................60.........925.747*559..*.....430....226..*...................290...848=...</c>
+            </r>
+            <r>
+              <c>..........=.......546......664..507......../....#.......337.............................94........=.........359....528*996..................</c>
+            </r>
+            <r>
+              <c>.....351...638.......*.............*433............337.....................226...859........../............................378..............</c>
+            </r>
+            <r>
+              <c>.......*..........648.........183.........126........*...........208.954......=....*.......626........499*..........803.../....642.235......</c>
+            </r>
+            <r>
+              <c>.518*...813..990..............*..............*......699...133....+...............68...............79......838.447...*..........*...*........</c>
+            </r>
+            <r>
+              <c>................+.696*.........586.6......243.............*..........$224.............392...275.....-.........*...699...#177..230.593.&amp;.....</c>
+            </r>
+            <r>
+              <c>...........$326.......683.-761.......491......./.........26...........................*.....=.........56.305.262.......................150..</c>
+            </r>
+            <r>
+              <c>....=.......................................41.908.........................819.785.....276.....&amp;.................%..........................</c>
+            </r>
+            <r>
+              <c>.618......401$...............-......................599..124......34+.........*..............676..................342...........473.........</c>
+            </r>
+            <r>
+              <c>....................889......888..454....723/.........*.................141*.....958.......................................416.....*94......</c>
+            </r>
+            <r>
+              <c>....212.............-................%.........826=....552..................569....*............................728........=............143.</c>
+            </r>
+            <r>
+              <c>...*......287...................=60.............................872.....886.......171....437......815..680.........*.............633....+...</c>
+            </r>
+            <r>
+              <c>..234....*.....687..........432........203/.....*...275.65.........*341.@...........................*....%.246......272.....922*..../.......</c>
+            </r>
+            <r>
+              <c>........967.........495.......*....161.......474.97...*..*..84.400.........*295....805......................@...................915.........</c>
+            </r>
+            <r>
+              <c>...419.................*.979...932....*.............729.215.#....*.......81........*......554.263*567..........812..........................</c>
+            </r>
+            <r>
+              <c>.....*..............458....$.........682......................179................348..906.................428.../............798............</c>
+            </r>
+            <r>
+              <c>...668..................-.........................552............./..................=.......+...........@..........99........*..85.4.......</c>
+            </r>
+            <r>
+              <c>........29......938..594......107........*171.98.....*..896....$..491...........+..........412..12.............326.*.....705..4....*........</c>
+            </r>
+            <r>
+              <c>..........*....................+......332......@....949..*...750.......$..974....342.............*....558......#............*..........794..</c>
+            </r>
+            <r>
+              <c>.......459....342*.........637...........................273.....658..601....*................735....*...............%....627....889...*....</c>
+            </r>
+            <r>
+              <c>.697..............131....................718.................689.............450....390............994.............793.............*..241...</c>
+            </r>
+            <r>
+              <c>..............991........89..........14.......*.................*912.............39.+...698.............................953*240...87........</c>
+            </r>
+            <r>
+              <c>..324.............618.....*...328......*....538.%.....307.920.........515...............*...................................................</c>
+            </r>
+            <r>
+              <c>.....*386...........*...780..*.......475.........719...*...*...................910...410................384.....999........*756.............</c>
+            </r>
+            <r>
+              <c>....................268.......701.............72........63.43...193.....+..................674...670$....*........*......95.......893.......</c>
+            </r>
+            <r>
+              <c>...16.........................................*....663........../....407.....................*........258....264=.298........202*..../......</c>
+            </r>
+            <r>
+              <c>...&amp;......574................187.......88...53.........931........@......&amp;759....$..672....385..............................................</c>
+            </r>
+            <r>
+              <c>.....938........192......297....*.723...*.................%......930...........692................283.....................=349.........&amp;981.</c>
+            </r>
+            <r>
+              <c>......*....................&amp;.207....*...843.736.........................260..........677..389........*..............954..........&amp;..........</c>
+            </r>
+            <r>
+              <c>......603........713.............745..................411.359.922.......*.............*......*.......718..888..561..=.........182..206......</c>
+            </r>
+            <r>
+              <c>............896....*.....173*383.......%...145...943...*.....*.........622..382*.......180.141............*...........................*.....</c>
+            </r>
+            <r>
+              <c>.....89........*...238.............+.714....*........575../.........................@...............$.....539.......114*721.645........471..</c>
+            </r>
+            <r>
+              <c>.......*307....968..............250......836.....498......59....909..601*..........117...........435../........944..........................</c>
+            </r>
+            <r>
+              <c>............*...............56*.................+....498..........-......730.882..........975..........680........*...95......152....$517...</c>
+            </r>
+            <r>
+              <c>...........150.......142.......473.713.+262...........=...577.266...736..........668..$.........70*111......811.165..@......................</c>
+            </r>
+            <r>
+              <c>.......741.............*.97.......................=.........*.......*....-654..........428..157................................748*823......</c>
+            </r>
+            <r>
+              <c>.........*............48...*.....772....892.....350....$.....760.148.............................440...........731*563......................</c>
+            </r>
+            <r>
+              <c>........260..............227...............*..........795..................649.....27.107...219.@.....23@...............226......369........</c>
+            </r>
+            <r>
+              <c>...41............&amp;...................+...136.....546.......$.920...................+...*...&amp;....../.........981...........@.......*.....454.</c>
+            </r>
+            <r>
+              <c>...*......635%....782...............560............*....896...........854..+...........694......340...@.498*....................41..959*....</c>
+            </r>
+            <r>
+              <c>...486..........................63..................810......641....+....*..532....642.......$.......90.....................76=.............</c>
+            </r>
+            <r>
+              <c>..........325.....................@..............@...........-....539.407.............$......9...........550................................</c>
+            </r>
+            <r>
+              <c>...787..$....*.$105.126.+810.........497.576...538.............................718.......................*...+....317..519..................</c>
+            </r>
+            <r>
+              <c>.......303.493...........................................-...........462..647..*...........%..+875....641..644.....*......*.....154.588.....</c>
+            </r>
+            <r>
+              <c>................./.....-......44.........%...@140.......228...43......*....*..132.794...628.......................669....110....*.....*.....</c>
+            </r>
+            <r>
+              <c>....579...........348..32.491*.......#...646.......506..........*708......74........#........117..............24*............698....532.....</c>
+            </r>
+            <r>
+              <c>......*.........................902.722............=....=........................................700....610......878....*...................</c>
+            </r>
+            <r>
+              <c>.../..885.../..351.............*.........................799.....814*238......*339....428*825......./................965.862......125.......</c>
+            </r>
+            <r>
+              <c>.723......243.@........852..........757...784.472..814.......603...........151........................279.617....849........................</c>
+            </r>
+            <r>
+              <c>........................*......./............*.......*.........*....#.............91.......246...384.....*........%.........................</c>
+            </r>
+            <r>
+              <c>.218.659....113+........128....691...................972......571....934............*......*...................................442..236.....</c>
+            </r>
+            <r>
+              <c>....*...............455.............868......&amp;379.........................594.......80....654.....................421.456...................</c>
+            </r>
+            <r>
+              <c>............2*535......*410...553........409......235.173..779......116.....*.................&amp;........*646.418*.....*.................596..</c>
+            </r>
+            <r>
+              <c>.70#.361......................./....493....$..........*...-.....440.........317...865...323....696..202..........952.......187.....%....#...</c>
+            </r>
+            <r>
+              <c>..........%...767......318............*................1.............../...........*......*................241......@.147...*.....389.......</c>
+            </r>
+            <r>
+              <c>..921.....301..*........*............67.540.../....149.........=........827.....=.347....956..........980...............$...204.............</c>
+            </r>
+            <r>
+              <c>...*............341......154.............*..695.....$.....20.183..............177..................$...$...66......699..........495......296</c>
+            </r>
+            <r>
+              <c>.460........&amp;.......+............%.......4......+........*.......................................347.........*36...*....912.......*..765....</c>
+            </r>
+            <r>
+              <c>............142..163......885..480...............805.%...587...........289.310*389........$843..........-..........417....*.....628....*....</c>
+            </r>
+            <r>
+              <c>.............................*............434........803........482......-.........556.........&amp;.........294...33$.........79........358....</c>
+            </r>
+            <r>
+              <c>.......................407@...873...............+..................*542....../.41....$./758....176.................*........................</c>
+            </r>
+            <r>
+              <c>.........842......................442*766.......284.........842...........856...*......................647......422.94..............@.......</c>
+            </r>
+            <r>
+              <c>....$........799............................&amp;.......433.318*.....576..........111....................................................788....</c>
+            </r>
+            <r>
+              <c>.720...168.....%........840..............989....................*.......=............468..419...........198.................................</c>
+            </r>
+            <r>
+              <c>......*..................+..392..............282.......&amp;...............591..........&amp;....*....101.340....-.....187.....-....................</c>
+            </r>
+            <r>
+              <c>.....746...........................499...779...*....456...........@....................346....*......%...........*..693.......94..72........</c>
+            </r>
+            <r>
+              <c>.........970..671..696./....................&amp;..999......124..246.434...........................173........@.....165.......925*.../..........</c>
+            </r>
+            <r>
+              <c>..628.............*....608.....827-.......*..............#....*........634...../418......185.......311...808.........372*............824....</c>
+            </r>
+            <r>
+              <c>..........694...360.....................43.645.................935........*516...........*....555.....*..................33.........-.......</c>
+            </r>
+            <r>
+              <c>............*............+........576#.........810*592..740.....................#665..968........*499.775..882+..............998............</c>
+            </r>
+            <r>
+              <c>....=303.....433.280......147..82.........................*..............................................................751*...............</c>
+            </r>
+            <r>
+              <c>.................$......................608...560..827...227....................448*..@......................@529.376...........@...........</c>
+            </r>
+            <r>
+              <c>...........465.....#.............554.....#.......#..#.......................401.......714...../.192.999..................466...28.161....351</c>
+            </r>
+            <r>
+              <c>..............&amp;....706..157.679.@..........741..............818.811=..............412.......376...&amp;..*.......=..............................</c>
+            </r>
+            <r>
+              <c>.441.....955....63.........*........=........+.............*..............#..........*..............399.......613.......444........*972.....</c>
+            </r>
+            <r>
+              <c>........@......*..................697..........600.&amp;965...354.#.....392...827..665....326.................323...........&amp;.......483.........</c>
+            </r>
+            <r>
+              <c>................381........972..........373*..*................9...&amp;...........................289.........*................................</c>
+            </r>
+            <r>
+              <c>...........................*....+.............239......................863....................*..........341.....*329...................$...</c>
+            </r>
+            <r>
+              <c>801..+...638.659........358...29..695.....@........241...680.....863..........................310.#...........941........@216........311....</c>
+            </r>
+            <r>
+              <c>...*.358.*...*....................@....786....*330................&amp;.........842........11..........279...................................686</c>
+            </r>
+            <r>
+              <c>.932..........666....533..712..............801.............64.544.....*972.....*353....-..809...........524...........397...............*...</c>
+            </r>
+            <r>
+              <c>.........795+.......*.......*......394=................586......*.........................................&amp;...........................562...</c>
+            </r>
+            <r>
+              <c>...................629.......184........796..............=................-946.348.../670............63.........%...........................</c>
+            </r>
+            <r>
+              <c>.....428-................918.........@..............#.............850.889.........*..............673..#..110.221..........337.560...-.......</c>
+            </r>
+            <r>
+              <c>.....................926*.........809.........=......627.............*..........344..........343.*........*.......832.......*....*...216....</c>
+            </r>
+            <r>
+              <c>.....624.....+................................78............915..701.....876.........734.402.....181.193.460.639.....*...558...138..........</c>
+            </r>
+            <r>
+              <c>.../...*...91....804..324..985......#429......................*..*.............892....................*......*...321.727...........134......</c>
+            </r>
+            <r>
+              <c>...991............*.........*.............39...........%.633.213.623..........&amp;...........601.919.....378.318...*............@34............</c>
+            </r>
+            <r>
+              <c>........183.....#.399...+..297..973...622..*........855../......................+684../......*................335.................733.......</c>
+            </r>
+            <r>
+              <c>..........@..576......597........*.....*....686....................371..98..23$......119................................=.777......*........</c>
+            </r>
+            <r>
+              <c>.................901%......*...412......102...........754...332.47*......*......861+......539................495@....801...*..404...777.....</c>
+            </r>
+            <r>
+              <c>.........577..........577..978.................990......*...#............236.............@..............339............../......*........534</c>
+            </r>
+            <r>
+              <c>..169.....*..687........*..........598..........*..349@.723.....864..........972............196.....491*........$........335.372............</c>
+            </r>
+            <r>
+              <c>.........339..=......633........29...*.........4............251*.....$..........*.250.........$.908..............356.230...........324.386..</c>
+            </r>
+            <r>
+              <c>.................943.............-.....=............................325...726.690.*................/.......646........*...214.......=.......</c>
+            </r>
+            <r>
+              <c>.........&amp;468.......*..................999.......944.........751..........*.......219.837.107..............*...=....271..*..............283.</c>
+            </r>
+            <r>
+              <c>......*..........210.....*390.....917*.....996*.....+..790...-.........128...............*................905.277.......320....936..835.....</c>
+            </r>
+            <r>
+              <c>...640.581....*.......167.............392......29......*..........885............................369..................&amp;...........*.$...#...</c>
+            </r>
+            <r>
+              <c>..............708..........106.223...................817.........*............277.........&amp;.........@..795.-296....172..........633......229</c>
+            </r>
+            <r>
+              <c>.......82..........@679.......*....*806.................../....10.............*.........456...........*.................95...........3......</c>
+            </r>
+            <r>
+              <c>..........536....................12........=914..458.......214..........995..97.-735........370.......334..876=.........*.......950#........</c>
+            </r>
+            <r>
+              <c>.........*.............=.....10.......837...........+..518.................*...................*........................761.................</c>
+            </r>
+            <r>
+              <c>......414..=.........794.............=................*...................813.394...815.718....759........403...............738.............</c>
+            </r>
+            <r>
+              <c>............463...........-..238.419............810.41...........452..2=..................&amp;..............&amp;........435.................468...</c>
+            </r>
+            <r>
+              <c>........................103....*..........................+...11.&amp;....................927...........%.......282...*...234.....229......*....</c>
+            </r>
+            <r>
+              <c>......301+....................678............100.......954.....*...@....182....@.........*....737...916....-....890....@..118*.......625....</c>
+            </r>
+            <r>
+              <c>............67...312..865+.............910.....*...382.......516....973....*..874.500..153.....*............................................</c>
+            </r>
+            <r>
+              <c>.....373+...*.....*...............979..........469....*375..............765...................99....................733................897..</c>
+            </r>
+            <r>
+              <c>..........828.....669......=.....*...........................................284.189...$..371......*168..............%.......762............</c>
+            </r>
+            <r>
+              <c>..........................4..565.226........562@....190......281....257.......*.......889./......57........./...#.......210..*..............</c>
+            </r>
+            <r>
+              <c>......47.......120.............#...................*...........&amp;....*.....169.549............%............414..744......%....503.#208.......</c>
+            </r>
+            <r>
+              <c>........*.................643.........397...........350..........289....&amp;...*........&amp;.....323.....+..................................856...</c>
+            </r>
+            <r>
+              <c>.....*...............458....#........................................104.....931..855..............89..469.....882...........=.........*....</c>
+            </r>
+            <r>
+              <c>..594.777......390...*...........422........355..............654............................81........*...........*......282..630....195....</c>
+            </r>
+            <r>
+              <c>..................*.568.912........*........*.....377..........*......*877.............419..*.....148.768.......471....+....*...............</c>
+            </r>
+            <r>
+              <c>.......393......163..........298.820............@..................582.......823......=...........*....................952..................</c>
+            </r>
+            <r>
+              <c>..........*268.......*733.59...@.............403..........................................14&amp;...502...............481.........$.....231.....</c>
+            </r>
+            <r>
+              <c>........#.........970.....*......#....981...........711.261=.................=.......................701..244................323.....*......</c>
+            </r>
+            <r>
+              <c>.396....993.............557.......46.....*...........+..........714*659.....134........623..........*............677.730..............846...</c>
+            </r>
+            <r>
+              <c>......#......91...405........296..........295..............@..*.......................#..............740............*........%..............</c>
+            </r>
+            <r>
+              <c>.......345..=........-.792....*..834................100.891....764...697........570......*....620*.@.....................508..295...........</c>
+            </r>
+            <r>
+              <c>...*13................../...340...#..134..............#................*..........*.......247......660....607....705.....=...........165....</c>
+            </r>
+            <r>
+              <c>.........521..824...222.............*......372..290.....844.825-.......867..820...627...........................*............128...../...777</c>
+            </r>
+            <r>
+              <c>...629...*....#..................788...535....*..-.......*.........361......................*......805.......732....914....../...-......@...</c>
+            </r>
+            <r>
+              <c>...*.....743...........853..................637.......880...-..849*........425............946..590....*302...........*.........748..........</c>
+            </r>
+            <r>
+              <c>...120.%.......271..............862.....70................207................=......233.......*..................443..263...................</c>
+            </r>
+            <r>
+              <c>........680....../.825.....&amp;793...........*....................-720.............555........184..509.......22......*.............811.........</c>
+            </r>
+            <r>
+              <c>..........................................772.272......................134.........*..374.........*............573........*.......*.........</c>
+            </r>
+            <r>
+              <c>934..231.....*....821...230.....981..............%........707..370....*.....634%..787..*..........93..909..70..........199.59...490.........</c>
+            </r>
+            <r>
+              <c>.......*....525.........-........*...747...676=..../.......*..........829...............324..952.........%...*..........................%...</c>
+            </r>
+            <r>
+              <c>.....189.........................791.............236........687.868........................................505..............713......777....</c>
+            </r>
+          </Data>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxTextInput" />
+    </Node>
+    <Node ToolID="26">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Filter.Filter">
+        <Position x="1146" y="294" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Mode>Simple</Mode>
+          <Simple>
+            <Operator>IsTrue</Operator>
+            <Field>Gear</Field>
+            <Operands>
+              <IgnoreTimeInDateTime>True</IgnoreTimeInDateTime>
+              <DateType>fixed</DateType>
+              <PeriodDate>2023-12-04 15:36:47</PeriodDate>
+              <PeriodType>
+              </PeriodType>
+              <PeriodCount>0</PeriodCount>
+              <Operand>
+              </Operand>
+              <StartDate>2023-12-04 15:36:47</StartDate>
+              <EndDate>2023-12-04 15:36:47</EndDate>
+            </Operands>
+          </Simple>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>[Gear] = 1</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFilter" />
+    </Node>
+    <Node ToolID="28">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.RecordID.RecordID">
+        <Position x="1266" y="282" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FieldName>GearID</FieldName>
+          <StartValue>1</StartValue>
+          <FieldType>Int32</FieldType>
+          <FieldSize>6</FieldSize>
+          <Position>0</Position>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Gear ID</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxRecordID" />
+    </Node>
+    <Node ToolID="29">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Join.Join">
+        <Position x="1758" y="270" />
+      </GuiSettings>
+      <Properties>
+        <Configuration joinByRecordPos="False">
+          <JoinInfo connection="Left">
+            <Field field="Nrow" />
+            <Field field="Ncol" />
+          </JoinInfo>
+          <JoinInfo connection="Right">
+            <Field field="Row" />
+            <Field field="col" />
+          </JoinInfo>
+          <SelectConfiguration>
+            <Configuration outputConnection="Join">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="Right_Row" selected="True" rename="Right_Row" input="Right_" />
+                <SelectField field="Right_Num" selected="True" rename="Right_Num" input="Right_" />
+                <SelectField field="Right_Number" selected="True" rename="Right_Number" input="Right_" />
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>find numbers next to gears</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxJoin" />
+    </Node>
+    <Node ToolID="30">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="1866" y="354" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="GearID" action="GroupBy" rename="GearID" />
+            <SummarizeField field="Num" action="CountDistinct" rename="CountDistinct_Num" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Count numbers per gear</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="31">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Filter.Filter">
+        <Position x="1974" y="354" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Mode>Simple</Mode>
+          <Simple>
+            <Operator>=</Operator>
+            <Field>CountDistinct_Num</Field>
+            <Operands>
+              <IgnoreTimeInDateTime>True</IgnoreTimeInDateTime>
+              <DateType>fixed</DateType>
+              <PeriodDate>2023-12-04 15:38:26</PeriodDate>
+              <PeriodType>
+              </PeriodType>
+              <PeriodCount>0</PeriodCount>
+              <StartDate>2023-12-04 15:38:26</StartDate>
+              <EndDate>2023-12-04 15:38:26</EndDate>
+              <Operand>2</Operand>
+            </Operands>
+          </Simple>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>[CountDistinct_Num] = 2</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFilter" />
+    </Node>
+    <Node ToolID="32">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Join.Join">
+        <Position x="2082" y="282" />
+      </GuiSettings>
+      <Properties>
+        <Configuration joinByRecordPos="False">
+          <JoinInfo connection="Left">
+            <Field field="GearID" />
+          </JoinInfo>
+          <JoinInfo connection="Right">
+            <Field field="GearID" />
+          </JoinInfo>
+          <SelectConfiguration>
+            <Configuration outputConnection="Join">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="Right_GearID" selected="False" rename="Right_GearID" input="Right_" />
+                <SelectField field="Right_CountDistinct_Num" selected="False" input="Right_" />
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>limit to gears</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxJoin" />
+    </Node>
+    <Node ToolID="34">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.MultiRowFormula.MultiRowFormula">
+        <Position x="2178" y="282" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <UpdateField value="False" />
+          <UpdateField_Name>GearID</UpdateField_Name>
+          <CreateField_Name>col1</CreateField_Name>
+          <CreateField_Type>Int32</CreateField_Type>
+          <CreateField_Size>4</CreateField_Size>
+          <OtherRows>Empty</OtherRows>
+          <NumRows value="1" />
+          <Expression>[row-1:col1]+1</Expression>
+          <GroupByFields>
+            <Field field="GearID" />
+          </GroupByFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>[row-1:col1]+1</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxMultiRowFormula" />
+    </Node>
+    <Node ToolID="35">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.CrossTab.CrossTab">
+        <Position x="2286" y="282" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <GroupFields>
+            <Field field="GearID" />
+          </GroupFields>
+          <HeaderField field="col1" />
+          <DataField field="number" />
+          <Methods>
+            <Method method="Sum" />
+          </Methods>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>flip out to columns</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="GearID" source="CrossTab:Group:Sum:" type="Int32" />
+            <Field name="1" source="CrossTab:Header:col1:1:Sum:" type="Int64" />
+            <Field name="2" source="CrossTab:Header:col1:2:Sum:" type="Int64" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxCrossTab" />
+    </Node>
+    <Node ToolID="36">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="2358" y="282" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="[1]*[2]" field="ratio" size="8" type="Double" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText><![CDATA[ratio = [1]*[2]
+]]></DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="37">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="2454" y="282" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="ratio" action="Sum" rename="Answer" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Sum ratio</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="38">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.BrowseV2.BrowseV2">
+        <Position x="2538" y="282" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <TempFile>C:\Users\ollie\AppData\Local\Temp\Engine_8516_781d491eb65f8f42a06a84e23e3296b9_\Engine_8516_d607382fff02da47b4ed5a4824975b89~.yxdb</TempFile>
+          <TempFileDataProfiling />
+          <Layout>
+            <ViewMode>Single</ViewMode>
+            <ViewSize value="100" />
+            <View1>
+              <DefaultTab>Profile</DefaultTab>
+              <Hints>
+                <Table />
+              </Hints>
+            </View1>
+            <View2 />
+          </Layout>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Part 2</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxBrowseV2" />
+    </Node>
+  </Nodes>
+  <Connections>
+    <Connection>
+      <Origin ToolID="2" Connection="Output" />
+      <Destination ToolID="3" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="3" Connection="Output" />
+      <Destination ToolID="4" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="4" Connection="Output" />
+      <Destination ToolID="8" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="5" Connection="Output" />
+      <Destination ToolID="9" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="6" Connection="Output" />
+      <Destination ToolID="10" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="7" Connection="Output" />
+      <Destination ToolID="6" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="8" Connection="Output" />
+      <Destination ToolID="5" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="9" Connection="Output" />
+      <Destination ToolID="7" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="10" Connection="True" />
+      <Destination ToolID="11" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="10" Connection="False" />
+      <Destination ToolID="13" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="11" Connection="Output" />
+      <Destination ToolID="19" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="12" Connection="Output" />
+      <Destination ToolID="14" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="13" Connection="True" />
+      <Destination ToolID="20" Connection="Right" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="18" Connection="Output" />
+      <Destination ToolID="20" Connection="Left" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="13" Connection="True" />
+      <Destination ToolID="26" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="14" Connection="Output" />
+      <Destination ToolID="15" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="15" Connection="Output" />
+      <Destination ToolID="16" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="16" Connection="Output" />
+      <Destination ToolID="18" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="18" Connection="Output" />
+      <Destination ToolID="29" Connection="Left" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="28" Connection="Output" />
+      <Destination ToolID="29" Connection="Right" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="19" Connection="Output" />
+      <Destination ToolID="12" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="20" Connection="Join" />
+      <Destination ToolID="23" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="23" Connection="Output" />
+      <Destination ToolID="24" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="25" Connection="Output" />
+      <Destination ToolID="2" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="26" Connection="True" />
+      <Destination ToolID="28" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="29" Connection="Join" />
+      <Destination ToolID="30" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="29" Connection="Join" />
+      <Destination ToolID="32" Connection="Left" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="31" Connection="True" />
+      <Destination ToolID="32" Connection="Right" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="30" Connection="Output" />
+      <Destination ToolID="31" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="32" Connection="Join" />
+      <Destination ToolID="34" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="34" Connection="Output" />
+      <Destination ToolID="35" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="35" Connection="Output" />
+      <Destination ToolID="36" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="36" Connection="Output" />
+      <Destination ToolID="37" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="37" Connection="Output" />
+      <Destination ToolID="38" Connection="Input" />
+    </Connection>
+  </Connections>
+  <Properties>
+    <Memory default="True" />
+    <GlobalRecordLimit value="0" />
+    <TempFiles default="True" />
+    <Annotation on="True" includeToolName="False" />
+    <ConvErrorLimit value="10" />
+    <ConvErrorLimit_Stop value="False" />
+    <CancelOnError value="False" />
+    <DisableBrowse value="False" />
+    <EnablePerformanceProfiling value="False" />
+    <RunWithE2 value="True" />
+    <PredictiveToolsCodePage value="1252" />
+    <DisableAllOutput value="False" />
+    <ShowAllMacroMessages value="False" />
+    <ShowConnectionStatusIsOn value="True" />
+    <ShowConnectionStatusOnlyWhenRunning value="True" />
+    <ZoomLevel value="0" />
+    <LayoutType>Horizontal</LayoutType>
+    <MetaInfo>
+      <NameIsFileName value="True" />
+      <Name>Day 3</Name>
+      <Description />
+      <RootToolName />
+      <ToolVersion />
+      <ToolInDb value="False" />
+      <CategoryName />
+      <SearchTags />
+      <Author />
+      <Company />
+      <Copyright />
+      <DescriptionLink actual="" displayed="" />
+      <Example>
+        <Description />
+        <File />
+      </Example>
+      <WorkflowId value="bb58fd1f-1908-450e-ba30-355bfede84e4" />
+      <Telemetry>
+        <PreviousWorkflowId value="dfc1f789-71d6-4be4-993f-06eb3a1ab978" />
+        <OriginWorkflowId value="dfc1f789-71d6-4be4-993f-06eb3a1ab978" />
+      </Telemetry>
+      <PlatformWorkflowId value="" />
+    </MetaInfo>
+    <Events>
+      <Enabled value="True" />
+    </Events>
+  </Properties>
+</AlteryxDocument>
